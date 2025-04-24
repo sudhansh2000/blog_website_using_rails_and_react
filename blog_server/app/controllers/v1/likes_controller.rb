@@ -2,21 +2,22 @@ class V1:: LikesController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
     if params[:post_id].present?
-      @post = Post.find(params[:post_id])
-      @likes = @post.likes
+      post = Post.find(params[:post_id])
+      likes = post.likes.count
     elsif params[:comment_id].present?
-      @comment = Comment.find(params[:comment_id])
-      @likes = @comment.likes
+      comment = Comment.find(params[:comment_id])
+      likes = comment.likes.count
     else params[:user_id].present?
-      @user = User.find(params[:user_id])
-      @likes = @user.likes
+      user = User.find(params[:user_id])
+      likes = User.joins(:likes).where(user_id: params[:user_id]).select()
+      likes = user.likes
     end
 
     render json: likes
   end
 
   def show
-    @like = Like.find(params[:id])
+    like = Like.find(params[:id])
     render json: likes
   end
 
@@ -40,19 +41,19 @@ class V1:: LikesController < ApplicationController
   end
 
   # def update
-  #   @like = Like.find(params[:id])
-  #   if @like.update(like_params)
-  #     render json: { like: @like, message: "Like updated successfully" }, status: :ok
+  #   like = Like.find(params[:id])
+  #   if like.update(like_params)
+  #     render json: { like: like, message: "Like updated successfully" }, status: :ok
   #   else
-  #     render json: { errors: @like.errors.full_messages }, status: :unprocessable_entity
+  #     render json: { errors: like.errors.full_messages }, status: :unprocessable_entity
   #   end
   # end
   # def destroy
-  #   @like = Like.find(params[:id])
-  #   if @like.destroy
+  #   like = Like.find(params[:id])
+  #   if like.destroy
   #     render json: { message: "Like deleted successfully" }, status: :ok
   #   else
-  #     render json: { errors: @like.errors.full_messages }, status: :unprocessable_entity
+  #     render json: { errors: like.errors.full_messages }, status: :unprocessable_entity
   #   end
   # end
   def like_params
