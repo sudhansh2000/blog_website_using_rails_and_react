@@ -1,0 +1,9 @@
+
+post = Post.last
+var={}
+while 
+
+def print_pattern(comment)
+
+
+end
