@@ -1,22 +1,4 @@
 Rails.application.routes.draw do
-  # get "likes/index"
-  # get "likes/show"
-  # get "likes/create"
-  # get "likes/update"
-  # get "categories/index"
-  # get "categories/show"
-  # get "categories/create"
-  # get "categories/update"
-  # get "comments/index"
-  # get "comments/show"
-  # get "comments/create"
-  # get "comments/update"
-  # get "comments/destroy"
-  # get "users/index"
-  # get "users/show"
-  # get "users/create"
-  # get "users/update"
-  # get "posts/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -31,7 +13,7 @@ Rails.application.routes.draw do
     resources :categories, only: [ :index, :show, :create, :update, :destroy ]
 
     resources :users do
-      resources :comments, only: [ :index, :show ]
+      resources :comments, only: [ :index ]
       resources :posts, only: [ :index, :show, :create, :destroy ]
       resources :likes, only: [ :index ]
     end
@@ -39,24 +21,12 @@ Rails.application.routes.draw do
       resources :posts, only: [ :index, :create ]
     end
     resources :posts do
-      resources :comments, only: [ :index, :show, :create ]
+      resources :comments, only: [ :index, :create ]
       resources :likes, only: [ :index, :create ]
     end
     resources :comments do
+      resources :comments, only: [ :index, :create ]
       resources :likes, only: [ :index, :create ]
     end
   end
-
-  # get "posts" => "posts#index", as: :posts
-  # namespace :api do
-  #   namespace :v1 do
-  #     resources :posts, only: [:index, :show, :create, :update, :destroy]
-  # ``
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

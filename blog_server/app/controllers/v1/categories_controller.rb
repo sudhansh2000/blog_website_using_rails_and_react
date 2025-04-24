@@ -6,12 +6,12 @@ class V1:: CategoriesController < ApplicationController
 
   def show
     Category.find(params[:id])
-    categories = Category.allocate
+    categories = Category.all
     render json: categories
   end
 
   def create
-    category = Category.new(category_params)
+    category = Category.new(cat_name: params[:category][:cat_name])
     if category.save
       render json: { category: category, message: "Category created successfully" }, status: :created
     else
@@ -21,7 +21,7 @@ class V1:: CategoriesController < ApplicationController
 
   def update
     category = Category.find(params[:id])
-    if category.update(category_params)
+    if category.update(cat_name: params[:category][:cat_name])
       render json: { category: category, message: "Category updated successfully" }, status: :ok
     else
       render json: { errors: category.errors.full_messages }, status: :unprocessable_entity
