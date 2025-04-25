@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_23_104653) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_25_053058) do
   create_table "categories", force: :cascade do |t|
     t.string "cat_name"
     t.datetime "created_at", null: false
@@ -57,12 +57,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_23_104653) do
     t.string "user_name"
     t.string "email"
     t.string "phone_number"
-    t.string "password"
+    t.string "password_digest"
     t.date "dob"
     t.boolean "is_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "password_digest"
   end
 
   add_foreign_key "comments", "comments", column: "parent_id"

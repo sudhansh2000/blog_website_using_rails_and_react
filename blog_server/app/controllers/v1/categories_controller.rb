@@ -4,12 +4,6 @@ class V1:: CategoriesController < ApplicationController
     render json: categories
   end
 
-  def show
-    Category.find(params[:id])
-    categories = Category.all
-    render json: categories
-  end
-
   def create
     category = Category.new(cat_name: params[:category][:cat_name])
     if category.save
@@ -30,10 +24,11 @@ class V1:: CategoriesController < ApplicationController
 
   def destroy
     category = Category.find(params[:id])
-    render json: category
-  end
-
-  def category_params
-    params.require(:category).permit(:cat_name)
+    unless category.nil?
+      category.destroy
+      render json: { message: "Category deleted successfully" }, status: :ok
+    else
+      render json: { message: "Category Not found" }, status: :not_found
+    end
   end
 end

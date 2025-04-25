@@ -11,9 +11,8 @@ class V1:: LikesController < ApplicationController
       likes = { total_likes: comment.likes.count }
 
     else params[:user_id].present?
-      user = User.find(params[:user_id])
-      likes = User.joins(:likes).where(user_id: params[:user_id]).select()
-      likes = user.likes
+      likes = Post.joins(:likes).where("likes.user_id = ?", params[:user_id]).
+      select("posts.id, title, likes.created_at")
     end
 
     render json: likes

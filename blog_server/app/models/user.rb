@@ -15,6 +15,6 @@ class User < ApplicationRecord
     before_validation :set_default_is_active
 
     def set_default_is_active
-      sef.is_active = true if self.is_active.nil?
+      self.is_active = true if self.is_active.nil?
     end
 end

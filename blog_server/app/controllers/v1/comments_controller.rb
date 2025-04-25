@@ -1,19 +1,47 @@
 class V1:: CommentsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    if params[:post_id].present?
-      post = Post.find(params[:post_id])
-      comments = post.comments
+    comments = if params[:post_id].present?
+      comment_replies_count = Comment.group(:parent_id).count
+
+      Comment.joins(:user).
+        where(post_id: params[:post_id], parent_id: nil).map do |comment|
+          {
+            id: comment.id,
+            user_name: comment.user.user_name,
+            content: comment.content,
+            parent_id: comment.parent_id,
+            created_at: comment.created_at,
+            replies_count: comment_replies_count[comment.id]
+          }
+        end
 
     elsif params[:user_id].present?
-      user = User.find(params[:user_id])
-      comments = user.comments
+      Comment.joins(:post).
+      where("comments.user_id = ?", params[:user_id]).
+      select("comments.id, title, comments.content, parent_id, comments.created_at, post_id")
+
+    elsif params[:comment_id].present?
+
+      comment_replies_count = Comment.group(:parent_id).count
+
+      Comment.joins(:user).
+        where(parent_id: params[:comment_id]).map do |comment|
+          {
+            id: comment.id,
+            user_name: comment.user.user_name,
+            content: comment.content,
+            parent_id: comment.parent_id,
+            created_at: comment.created_at,
+            replies_count: comment_replies_count[comment.id]
+          }
+        end
 
     else
-      comments = Comment.all
+      Comment.all
     end
 
-    render json: comments, include: [ :user, :post ]
+    render json: comments
   end
 
   def create

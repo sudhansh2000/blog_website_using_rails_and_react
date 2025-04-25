@@ -2,17 +2,17 @@ class V1:: UsersController < ApplicationController
   # skip the authetication part in the controller
   skip_before_action :verify_authenticity_token
   def index
-    page_size = 2
-    user = User.all
-    if params[:page_no].present?
+    users = User.all
+    if params[:page_no].present? && params[:page_size].present?
+      page_size = params[:page_size].to_i
       page_offset = (params[:page_no].to_i - 1) * page_size
-      user = user.offset(page_offset).limit(page_size)
+      users = users.offset(page_offset).limit(page_size)
     end
-    render json: user
+    render json: users
   end
 
   def show
-    user = User.find(params[:id])
+    user = User.find_by(id: params[:id])
     render json: user
   end
 

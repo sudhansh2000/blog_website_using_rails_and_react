@@ -1,0 +1,44 @@
+1,70,000
+
+15209
+12554
+1099
+
+GET    /v1/posts           params:page_no
+GET    /v1/posts/:id
+PUT    /v1/posts/:id
+DELETE /v1/posts/:id
+
+GET    /v1/users           params:page_no
+GET    /v1/users/:id
+POST   /v1/users
+PATCH  /v1/users/:id
+
+GET    /v1/comments
+PATCH  /v1/comments/:id
+PUT    /v1/comments/:id
+DELETE /v1/comments/:id
+
+GET    /v1/categories
+POST   /v1/categories
+PATCH  /v1/categories/:id
+DELETE /v1/categories/:id
+
+GET    /v1/users/:user_id/comments
+GET    /v1/users/:user_id/posts
+POST   /v1/users/:user_id/posts
+GET    /v1/users/:user_id/likes
+
+GET    /v1/categories/:category_id/posts
+
+GET    /v1/posts/:post_id/comments
+POST   /v1/posts/:post_id/comments
+GET    /v1/posts/:post_id/likes
+POST   /v1/posts/:post_id/likes
+
+GET    /v1/comments/:comment_id/comments
+POST   /v1/comments/:comment_id/comments
+GET    /v1/comments/:comment_id/likes
+POST   /v1/comments/:comment_id/likes
+
+
