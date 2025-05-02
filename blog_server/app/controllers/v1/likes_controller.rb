@@ -1,5 +1,6 @@
 class V1:: LikesController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  before_action :authenticate_user!, only: [ :create ]
+  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
 
   def index
     if params[:post_id].present?

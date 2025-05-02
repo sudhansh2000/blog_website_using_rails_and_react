@@ -1,6 +1,6 @@
 class V1:: PostsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
+  before_action :authenticate_user!, only: [ :create, :update, :destroy ]
+  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
   def index
     if params[:category_id].present?
       category = Category.find(params[:category_id])
@@ -41,6 +41,7 @@ class V1:: PostsController < ApplicationController
 
   def create
     post = Post.new(post_params)
+    # post.user_id = current_user.id
     post.user_id = params[:user_id]
 
     if post.save

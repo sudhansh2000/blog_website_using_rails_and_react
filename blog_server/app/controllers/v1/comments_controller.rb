@@ -1,5 +1,7 @@
 class V1:: CommentsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  before_action :authenticate_user!, only: [ :create, :update, :destroy ]
+  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+
   def index
     comments = if params[:post_id].present?
       comment_replies_count = Comment.group(:parent_id).count

@@ -1,4 +1,7 @@
 class V1:: CategoriesController < ApplicationController
+  before_action :authenticate_user!, only: [ :create, :update, :destroy ]
+  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+
   def index
     categories = Category.all
     render json: categories

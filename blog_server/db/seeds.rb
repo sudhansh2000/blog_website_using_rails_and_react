@@ -22,7 +22,7 @@ users = 10.times.map do
     user_name: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email,
     phone_number: Faker::Number.number(digits: 10),
-    password: "password",
+    password: "password123",
     dob: Faker::Date.birthday(min_age: 18, max_age: 60)
   )
 end

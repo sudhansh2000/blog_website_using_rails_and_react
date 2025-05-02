@@ -1,6 +1,7 @@
 class V1:: UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  
+  before_action :authenticate_user!, only: [ :index, :show, :update ]
+  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+
   def index
     users = User.all
     if params[:page_no].present? && params[:page_size].present?

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :users, defaults: { format: :json }
   get "up" => "rails/health#show", as: :rails_health_check
   # rote to get all the posts
+  post "sign_in", to: "v1/sessions#create"
+  delete "sign_out", to: "v1/sessions#destroy"
+
   namespace :v1 do
     resources :posts, only: [ :index, :show, :update, :destroy ]
     resources :users, only: [ :index, :show, :create, :update ]
