@@ -1,0 +1,5 @@
+FactoryBot.define do
+  factory :category do
+    cat_name { Faker::Lorem.word }
+  end
+end

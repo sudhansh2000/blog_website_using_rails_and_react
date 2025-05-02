@@ -47,9 +47,14 @@ class V1:: CommentsController < ApplicationController
   def create
     if params[:comment_id].present?
       parent_comment = Comment.find(params[:comment_id])
-      comment = parent_comment.replies.new(post_id: parent_comment.post_id, parent_id: params[:parent_id], user_id: params[:user_id], content: params[:comment][:content])
+      comment = parent_comment.replies.new(post_id: parent_comment.post_id,
+                                           parent_id: params[:comment_id],
+                                           user_id: params[:comment][:user_id],
+                                           content: params[:comment][:content]
+                                          )
     else
-      comment = Comment.new(post_id: params[:post_id], user_id: params[:user_id], parent_id: params[:parent_id], content: params[:comment][:content])
+      comment = Comment.new(comment_params)
+      comment.post_id = params[:post_id]
     end
 
     if comment.save
@@ -75,5 +80,12 @@ class V1:: CommentsController < ApplicationController
     else
       render json: { errors: comment.errors.full_messages }, status: :unprocessable_entity
     end
+  end
+
+  private
+  def comment_params
+    params.require(:comment).permit(
+      :user_id, :post_id, :parent_id, :content
+    )
   end
 end

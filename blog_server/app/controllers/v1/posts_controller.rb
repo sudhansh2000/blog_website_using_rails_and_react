@@ -11,7 +11,7 @@ class V1:: PostsController < ApplicationController
       posts = user.posts.select("posts.id, title, tags, created_at")
 
     else
-      posts = Post.all
+      posts = Post.all.select("posts.id, title, tags, created_at")
     end
 
     if params[:page_no].present? && params[:page_size].present?
@@ -34,7 +34,7 @@ class V1:: PostsController < ApplicationController
         users.first_name,
         users.last_name,
         categories.cat_name,
-        tags")
+        tags").first
 
     render json: post
   end
@@ -55,13 +55,7 @@ class V1:: PostsController < ApplicationController
 
     post.tags.uniq!
 
-    if post.update(
-      category_id: params[:post][:category_id],
-      title: params[:post][:title],
-      content: params[:post][:content],
-      is_private: params[:post][:is_private],
-      tags: params[:post][:tags]
-    )
+    if post.update(post_params)
       render json: { post: post, message: "Post updated successfully" }, status: :ok
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
