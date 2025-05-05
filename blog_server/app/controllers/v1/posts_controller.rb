@@ -1,17 +1,16 @@
 class V1:: PostsController < ApplicationController
   before_action :authenticate_user!, only: [ :create, :update, :destroy ]
   skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+  before_action :authorize_user!, only: [ :update, :destroy ]
+  skip_before_action :authorize_user!, if: -> { Rails.env.test? }
+
   def index
-    if params[:category_id].present?
-      category = Category.find(params[:category_id])
-      posts = category.posts.select("posts.id, title, tags, created_at")
-
+    posts = if params[:category_id].present?
+      Post.where(category_id: params[:category_id]).select_post
     elsif params[:user_id].present?
-      user = User.find(params[:user_id])
-      posts = user.posts.select("posts.id, title, tags, created_at")
-
+      Post.where(user_id: params[:user_id]).select_post
     else
-      posts = Post.all.select("posts.id, title, tags, created_at")
+      Post.select_post
     end
 
     if params[:page_no].present? && params[:page_size].present?
@@ -27,6 +26,7 @@ class V1:: PostsController < ApplicationController
     post = Post.joins(:category, :user).
       where("posts.id = ?", params[:id]).
       select("posts.id, posts.title,
+        users.id as user_id,
         posts.content,
         posts.created_at,
         posts.is_private,
@@ -52,11 +52,10 @@ class V1:: PostsController < ApplicationController
   end
 
   def update
-    post = Post.find(params[:id])
-
-    post.tags.uniq!
+    post = Post.find_by(id: params[:id])
 
     if post.update(post_params)
+      post.tags.uniq!
       render json: { post: post, message: "Post updated successfully" }, status: :ok
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
@@ -74,6 +73,13 @@ class V1:: PostsController < ApplicationController
   end
 
   private
+  def authorize_user!
+    post = Post.find_by(id: params[:id])
+    unless post && post.user == current_user
+      render json: { errors: "unauthorized user" }, status: :unauthorized and return
+    end
+  end
+
   def post_params
     params.require(:post).permit(
       :user_id, :category_id, :title, :content, :is_private, :tags

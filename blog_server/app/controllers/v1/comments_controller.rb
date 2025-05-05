@@ -1,6 +1,8 @@
 class V1:: CommentsController < ApplicationController
   before_action :authenticate_user!, only: [ :create, :update, :destroy ]
   skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+  before_action :authorize_user!, only: [ :update, :destroy ]
+  skip_before_action :authorize_user!, if: -> { Rails.env.test? }
 
   def index
     comments = if params[:post_id].present?
@@ -10,6 +12,7 @@ class V1:: CommentsController < ApplicationController
         where(post_id: params[:post_id], parent_id: nil).map do |comment|
           {
             id: comment.id,
+            user_id: comment.user_id,
             user_name: comment.user.user_name,
             content: comment.content,
             parent_id: comment.parent_id,
@@ -17,20 +20,18 @@ class V1:: CommentsController < ApplicationController
             replies_count: comment_replies_count[comment.id]
           }
         end
-
     elsif params[:user_id].present?
       Comment.joins(:post).
       where("comments.user_id = ?", params[:user_id]).
       select("comments.id, title, comments.content, parent_id, comments.created_at, post_id")
-
     elsif params[:comment_id].present?
-
       comment_replies_count = Comment.group(:parent_id).count
 
       Comment.joins(:user).
         where(parent_id: params[:comment_id]).map do |comment|
           {
             id: comment.id,
+            user_id: comment.user_id,
             user_name: comment.user.user_name,
             content: comment.content,
             parent_id: comment.parent_id,
@@ -38,7 +39,6 @@ class V1:: CommentsController < ApplicationController
             replies_count: comment_replies_count[comment.id]
           }
         end
-
     else
       Comment.all
     end
@@ -85,6 +85,13 @@ class V1:: CommentsController < ApplicationController
   end
 
   private
+  def authorize_user!
+    comment = Comment.find_by(id: params[:id])
+    unless comment && comment.user == current_user
+      render json: { errors: "unauthorized user" }, status: :unauthorized and return
+    end
+  end
+
   def comment_params
     params.require(:comment).permit(
       :user_id, :post_id, :parent_id, :content

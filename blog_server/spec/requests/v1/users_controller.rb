@@ -4,6 +4,8 @@ RSpec.describe "V1::UsersController", type: :request do
   let!(:user1) { create(:user) }
   let!(:user2) { create(:user) }
 
+  sign_in user1
+
   context "for index users" do
     it "returns a list of users" do
       get "/v1/users"

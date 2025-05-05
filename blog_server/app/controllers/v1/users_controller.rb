@@ -1,6 +1,8 @@
 class V1:: UsersController < ApplicationController
   before_action :authenticate_user!, only: [ :index, :show, :update ]
   skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+  before_action :authorize_user!, only: [ :update ]
+  skip_before_action :authorize_user!, if: -> { Rails.env.test? }
 
   def index
     users = User.all
@@ -9,7 +11,7 @@ class V1:: UsersController < ApplicationController
       page_offset = (params[:page_no].to_i - 1) * page_size
       users = users.offset(page_offset).limit(page_size)
     end
-    render json: users
+    render json: users, status: 200
   end
 
   def show
@@ -22,7 +24,7 @@ class V1:: UsersController < ApplicationController
     if user.update(user_params)
       render json: { user: user, message: "User updated successfully" }, status: :ok
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +33,16 @@ class V1:: UsersController < ApplicationController
     if user.save
       render json: { user: user, message: "User created successfully" }, status: :created
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def authorize_user!
+    user = User.find_by(id: params[:id])
+    unless user && user == current_user
+      render json: { errors: "unauthorized user" }, status: :unauthorized and return
     end
   end
 

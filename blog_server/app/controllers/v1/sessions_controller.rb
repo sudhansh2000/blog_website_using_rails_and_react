@@ -2,9 +2,8 @@ class V1::SessionsController < ApplicationController
   def create
     user = User.find_for_database_authentication(email: params[:user][:email])
 
-    # If user exists and the password matches
     if user&.valid_password?(params[:user][:password])
-      # Generate the JWT token
+      # generate the JWT token
       token = encode_token(user_id: user.id)
       render json: { user: user, token: token }, status: :ok
     else
@@ -12,10 +11,8 @@ class V1::SessionsController < ApplicationController
     end
   end
 
-  # DELETE /sign_out
   def destroy
-    # Logic for handling logout, if needed
-    head :no_content
+    render json: { message: "Successfully logged out" }, status: :ok
   end
 
   private
