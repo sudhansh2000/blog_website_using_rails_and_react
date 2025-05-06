@@ -9,6 +9,7 @@ class CreateUsers < ActiveRecord::Migration[8.0]
       t.string :password
       t.date :dob
       t.boolean :is_active
+      t.string :role, default: "user"
 
       t.timestamps
     end

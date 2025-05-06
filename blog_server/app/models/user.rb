@@ -9,6 +9,17 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :category_preferences
+  has_many :preferred_categories, through: :category_preferences, source: :category
+  has_many :bookmarks
+  has_many :bookmarked_posts, through: :bookmarks, source: :post
+
+  has_many :sent_share_posts, class_name: "SharePost", foreign_key: :sender_id
+  has_many :shared_posts, through: :sent_share_posts, source: :post
+
+  # Posts this user has received from others
+  has_many :received_share_posts, class_name: "SharePost", foreign_key: :receiver_id
+  has_many :received_posts, through: :received_share_posts, source: :post
   # has_secure_password
 
 

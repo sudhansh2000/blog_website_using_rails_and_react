@@ -3,3 +3,5 @@ FactoryBot.define do
     cat_name { Faker::Lorem.word }
   end
 end
+
+# categories,comments,likes,posts,users

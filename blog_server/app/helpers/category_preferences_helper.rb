@@ -1,0 +1,2 @@
+module CategoryPreferencesHelper
+end

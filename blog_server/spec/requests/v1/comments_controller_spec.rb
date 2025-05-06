@@ -18,11 +18,8 @@ RSpec.describe "V1::CommentsController", type: :request do
 
     it "show all parent comments of specific post" do
       get "/v1/posts/#{post1.id}/comments"
-      # puts Comment.all
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-
-      # puts json
       expect(json.length).to be >= 1
     end
 
