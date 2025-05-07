@@ -15,7 +15,7 @@ class V1:: BookmarksController < ApplicationController
     if bookmark.save
       render json: { bookmark: bookmark, message: "Bookmark created successfully" }, status: :created
     else
-      render json: { message: "Bookmark creation failed" }, status: :unprocessable_entity
+      render json: { errors: bookmark.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

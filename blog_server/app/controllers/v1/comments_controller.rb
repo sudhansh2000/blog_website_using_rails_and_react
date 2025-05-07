@@ -36,7 +36,7 @@ class V1:: CommentsController < ApplicationController
             content: comment.content,
             parent_id: comment.parent_id,
             created_at: comment.created_at,
-            replies_count: comment_replies_count[comment.id]
+            replies_count: comment_replies_count[comment.id] || 0
           }
         end
     else

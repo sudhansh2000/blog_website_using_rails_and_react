@@ -4,27 +4,12 @@ class V1::SharePostsController < ApplicationController
 
   before_action :set_user, only: :index
   def index
-    user_id = params[:user_id]
+    shared_data = SharePost.joins(:post, :sender).
+                            where(receiver_id: @user.id).
+                            select(:post_id, :user_id, :title, :created_at, :user_name).
+                            order(created_at: :desc)
 
-    shared_data = SharePost
-      .joins(:post, sender: :posts)
-      .where(receiver_id: user_id)
-      .select(
-        "share_posts.created_at AS shared_on,
-        users.user_name AS sender_username,
-        posts.title AS post_title,
-        posts.tags"
-      )
-      .order("share_posts.created_at DESC")
-
-    render json: shared_data.map do |shared_on, username, title, tags|
-      {
-        shared_on: shared_on.strftime("%Y-%m-%d %H:%M:%S"),
-        sender_username: username,
-        post_title: title,
-        tags: JSON.parse(tags || "[]")
-      }
-    end
+    render json: shared_data
   end
 
   def create

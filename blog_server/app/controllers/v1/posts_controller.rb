@@ -41,7 +41,6 @@ class V1:: PostsController < ApplicationController
 
   def create
     post = Post.new(post_params)
-    # post.user_id = current_user.id
     post.user_id = params[:user_id]
 
     if post.save
