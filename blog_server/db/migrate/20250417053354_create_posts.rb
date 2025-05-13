@@ -5,7 +5,7 @@ class CreatePosts < ActiveRecord::Migration[8.0]
       t.references :category, null: false, foreign_key: true
       t.string :title
       t.text :content
-      t.boolean :is_private
+      t.boolean :is_private, default: false
       t.json :tags, default: []
 
       t.timestamps

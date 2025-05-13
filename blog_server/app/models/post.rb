@@ -15,5 +15,4 @@ class Post < ApplicationRecord
 
     validates :title, presence: true
     validates :content, presence: true
-    validates :is_private, inclusion: { in: [ true, false ] }
 end

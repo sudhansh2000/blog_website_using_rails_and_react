@@ -17,6 +17,9 @@ class V1:: BookmarksController < ApplicationController
     else
       render json: { errors: bookmark.errors.full_messages }, status: :unprocessable_entity
     end
+
+  rescue ActiveRecord::RecordNotUnique
+    render json: { error: "Post has already been shared with this user" }, status: :unprocessable_entity
   end
 
   def destroy

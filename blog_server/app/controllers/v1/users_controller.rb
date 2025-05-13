@@ -1,5 +1,5 @@
 class V1:: UsersController < ApplicationController
-  before_action :authenticate_user!, only: [ :index, :show, :update ]
+  before_action :authenticate_user!, only: [ :index, :update ]
   skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
   before_action :authorize_user!, only: [ :update ]
   skip_before_action :authorize_user!, if: -> { Rails.env.test? }

@@ -79,7 +79,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_065446) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_share_posts_on_post_id"
     t.index ["receiver_id"], name: "index_share_posts_on_receiver_id"
-    t.index ["sender_id", "receiver_id", "post_id"], name: "index_share_posts_on_sender_id_and_receiver_id_and_post_id", unique: true
     t.index ["sender_id"], name: "index_share_posts_on_sender_id"
   end
 

@@ -18,7 +18,7 @@ categories = 5.times.map do
 end
 
 # Create Users
-users = 10.times.map do
+users = 40.times.map do
   User.create!(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
@@ -31,19 +31,19 @@ users = 10.times.map do
 end
 
 # Create Posts
-posts = 20.times.map do
+posts = 60.times.map do
   Post.create!(
     user: users.sample,
     category: categories.sample,
     title: Faker::Book.title,
-    content: Faker::Lorem.paragraph(sentence_count: 3),
+    content: Faker::Lorem.paragraph(sentence_count: 30),
     is_private: [ true, false ].sample,
     tags: Array.new(3) { Faker::Lorem.unique.word }
   )
 end
 
 # Create Comments
-comments = 30.times.map do
+comments = 100.times.map do
   Comment.create!(
     user: users.sample,
     post: posts.sample,
@@ -52,7 +52,7 @@ comments = 30.times.map do
 end
 
 # Create Replies (nested comments)
-10.times do
+34.times do
   Comment.create!(
     user: users.sample,
     post: posts.sample,
@@ -62,7 +62,7 @@ end
 end
 
 # Add Likes on Posts and Comments
-30.times do
+50.times do
   user = users.sample
   likeable = (posts + comments).sample
 
@@ -74,10 +74,8 @@ end
 # Bookmarks
 users.each do |user|
   2.times do
-    Bookmark.create!(
-      user: user,
-      post: posts.sample
-    )
+    post = posts.sample
+    Bookmark.find_or_create_by!(user: user, post: post)
   end
 end
 
@@ -88,16 +86,16 @@ users.each do |user|
   end
 end
 
-# Share Posts
-10.times do
+100.times do
   sender = users.sample
   receiver = (users - [ sender ]).sample
   post = posts.sample
 
-  SharePost.create!(
-    sender: sender,
-    receiver: receiver,
-    post: post
+  # Create SharePost with correct sender_id, receiver_id, and post_id
+  SharePost.find_or_create_by!(
+    sender_id: sender.id,
+    receiver_id: receiver.id,
+    post_id: post.id
   )
 end
 

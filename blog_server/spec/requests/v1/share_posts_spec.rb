@@ -35,7 +35,7 @@ RSpec.describe V1::SharePostsController, type: :request do
 
   describe "GET /v1/SharePost" do
     it "returns a list of shared posts with metadata" do
-      get "/v1/users/#{receiver.id}/share_posts", params: { user_id: receiver.id }
+      get "/v1/users/#{receiver.id}/share_posts"
 
       expect(response).to have_http_status(:ok)
       body = JSON.parse(response.body)

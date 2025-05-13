@@ -10,7 +10,7 @@ class AddDeviseToUsers < ActiveRecord::Migration[8.0]
       t.remove :password_digest
 
       ## Add Devise's encrypted_password
-      t.string :encrypted_password, null: false, default: ""
+      
 
       ## Recoverable
       t.string   :reset_password_token

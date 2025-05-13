@@ -20,5 +20,6 @@ class V1::CategoryPreferencesController < ApplicationController
     else
       render json: { message: "No new preferences created" }, status: :ok
     end
+  
   end
 end

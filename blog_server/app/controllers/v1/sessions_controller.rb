@@ -3,9 +3,9 @@ class V1::SessionsController < ApplicationController
     user = User.find_for_database_authentication(email: params[:user][:email])
 
     if user&.valid_password?(params[:user][:password])
-      # generate the JWT token
       token = encode_token(user_id: user.id)
-      render json: { user: user, token: token }, status: :ok
+      user_data = user.slice(:id, :first_name, :last_name, :user_name, :email, :dob)
+      render json: { user: user_data, token: token }, status: :ok
     else
       render json: { error: "Invalid credentials" }, status: :unauthorized
     end
@@ -19,6 +19,7 @@ class V1::SessionsController < ApplicationController
 
   # Your encode_token method
   def encode_token(payload)
+    payload[:exp] = 24.hours.from_now.to_i
     JWT.encode(payload, Rails.application.credentials.secret_key_base)
   end
 end
