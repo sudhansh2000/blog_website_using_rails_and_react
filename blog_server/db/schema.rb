@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_06_065446) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_14_050654) do
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -62,7 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_065446) do
     t.integer "user_id", null: false
     t.integer "category_id", null: false
     t.string "title"
-    t.string "content"
+    t.text "content", default: "", null: false
     t.boolean "is_private"
     t.json "tags", default: []
     t.datetime "created_at", null: false

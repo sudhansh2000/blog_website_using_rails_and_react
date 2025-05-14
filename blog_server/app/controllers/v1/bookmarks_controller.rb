@@ -4,7 +4,7 @@ class V1:: BookmarksController < ApplicationController
 
   def index
     user = User.find_by(id: params[:user_id])
-    bookmarked_posts = user.bookmarked_posts
+    bookmarked_posts = user.bookmarked_posts.select("posts.id, title, tags, bookmarks.created_at")
 
     render json: bookmarked_posts, status: :ok
   end

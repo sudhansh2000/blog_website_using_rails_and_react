@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "V1::PostsController", type: :request do
   let!(:category) { create(:category) }
-let!(:user2) { create(:user) }
-let!(:post1) { create(:post, user: user2, category: category) }
+  let!(:user2) { create(:user) }
+  let!(:post1) { create(:post, user: user2, category: category) }
 
   describe "create" do
     it "show all post" do
