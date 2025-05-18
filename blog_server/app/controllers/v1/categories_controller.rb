@@ -17,7 +17,7 @@ class V1:: CategoriesController < ApplicationController
   end
 
   def update
-    category = Category.find(params[:id])
+    category = Category.find_by(id: params[:id])
     if category.update(cat_name: params[:category][:cat_name])
       render json: { category: category, message: "Category updated successfully" }, status: :ok
     else
@@ -26,7 +26,7 @@ class V1:: CategoriesController < ApplicationController
   end
 
   def destroy
-    category = Category.find(params[:id])
+    category = Category.find_by(id: params[:id])
     unless category.nil?
       category.destroy
       render json: { message: "Category deleted successfully" }, status: :ok

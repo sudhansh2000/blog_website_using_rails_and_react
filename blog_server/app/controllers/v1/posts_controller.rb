@@ -6,11 +6,11 @@ class V1:: PostsController < ApplicationController
 
   def index
     posts = if params[:category_id].present?
-      Post.where(category_id: params[:category_id]).select_post
+      Post.where(category_id: params[:category_id], is_private: false).select_post
     elsif params[:user_id].present?
       Post.where(user_id: params[:user_id]).select_post
     else
-      Post.select_post
+      Post.where(is_private: false).select_post
     end
 
     if params[:page_no].present? && params[:page_size].present?
@@ -81,7 +81,7 @@ class V1:: PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(
-      :user_id, :category_id, :title, :content, :is_private, tags: []
+      :category_id, :title, :content, :is_private, tags: []
     )
   end
 end

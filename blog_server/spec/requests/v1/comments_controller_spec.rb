@@ -36,12 +36,12 @@ RSpec.describe "V1::CommentsController", type: :request do
     it "post /posts/post_id/comments" do
       params1 = {
         comment: {
-          post_id: post1.id,
+          # post_id: post1.id,
           user_id: user.id,
           content: "new comment"
         }
       }
-      post "/v1/posts/#{comment.id}/comments", params: params1
+      post "/v1/posts/#{post1.id}/comments", params: params1
       expect(response).to have_http_status(:created)
       json = JSON.parse(response.body)
       expect(json["comment"]["content"]).to eq("new comment")

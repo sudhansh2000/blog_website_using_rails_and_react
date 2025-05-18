@@ -1,0 +1,48 @@
+.about-us-container {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.about-us-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.about-us-header h1 {
+  font-size: 36px;
+  color: #333;
+}
+
+.about-us-content {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.about-us-content h2 {
+  font-size: 24px;
+  color: #24262b;
+  margin-top: 30px;
+}
+
+.about-us-content p {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .about-us-container {
+    padding: 20px;
+  }
+
+  .about-us-header h1 {
+    font-size: 28px;
+  }
+
+  .about-us-content h2 {
+    font-size: 20px;
+  }
+}

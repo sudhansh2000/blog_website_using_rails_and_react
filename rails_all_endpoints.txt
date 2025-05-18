@@ -41,4 +41,9 @@ POST   /v1/comments/:comment_id/comments
 GET    /v1/comments/:comment_id/likes
 POST   /v1/comments/:comment_id/likes
 
+npx create-react-app blog
+
+SharePost.joins(:post,:sender).where(receiver_id:2).select(:post_id, :title, :created_at, :tags, :user_name).order(created_at: :desc)
+
+18d23406002dfa354e137f1714f300e8d9e80fc3804b6e99606abe4bef8eab2521322a324da85dcfdf070a418aff61ed4daf484aa2548748e61705b7b14413ac
 

@@ -62,7 +62,7 @@ end
 end
 
 # Add Likes on Posts and Comments
-50.times do
+200.times do
   user = users.sample
   likeable = (posts + comments).sample
 

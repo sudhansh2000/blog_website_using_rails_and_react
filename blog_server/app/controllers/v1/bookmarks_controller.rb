@@ -19,7 +19,7 @@ class V1:: BookmarksController < ApplicationController
     end
 
   rescue ActiveRecord::RecordNotUnique
-    render json: { error: "Post has already been shared with this user" }, status: :unprocessable_entity
+    render json: { error: "Alrady bookmarked this post" }, status: :unprocessable_entity
   end
 
   def destroy

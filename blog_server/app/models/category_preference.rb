@@ -2,5 +2,5 @@ class CategoryPreference < ApplicationRecord
   belongs_to :user
   belongs_to :category
 
-  validates :category_id, uniqueness: { scope: :user_id }
+  # validates :category_id, uniqueness: { scope: :user_id }
 end

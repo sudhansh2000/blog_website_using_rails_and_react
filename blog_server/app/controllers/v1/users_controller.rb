@@ -1,11 +1,11 @@
 class V1:: UsersController < ApplicationController
-  before_action :authenticate_user!, only: [ :index, :update ]
+  before_action :authenticate_user!, only: [ :update ]
   skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
   before_action :authorize_user!, only: [ :update ]
   skip_before_action :authorize_user!, if: -> { Rails.env.test? }
 
   def index
-    users = User.all
+    users = User.all.select("id, first_name, last_name, user_name")
     if params[:page_no].present? && params[:page_size].present?
       page_size = params[:page_size].to_i
       page_offset = (params[:page_no].to_i - 1) * page_size
@@ -30,8 +30,9 @@ class V1:: UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
+
     if user.save
-      render json: { user: user, message: "User created successfully" }, status: :created
+      render json: { user: user.slice(:id, :first_name, :last_name, :email), message: "User created successfully" }, status: :created
     else
       render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end

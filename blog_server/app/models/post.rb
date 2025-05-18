@@ -3,10 +3,10 @@ class Post < ApplicationRecord
     belongs_to :category
     has_many :comments, dependent: :destroy
     has_many :likes, as: :liked_on, dependent: :destroy
-    has_many :bookmarks
+    has_many :bookmarks, dependent: :destroy
     has_many :bookmarked_by_users, through: :bookmarks, source: :user
 
-    has_many :share_posts
+    has_many :share_posts, dependent: :destroy
     has_many :shared_by_users, through: :share_posts, source: :sender
     has_many :shared_with_users, through: :share_posts, source: :receiver
 

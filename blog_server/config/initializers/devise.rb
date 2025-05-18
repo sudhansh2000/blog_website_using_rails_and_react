@@ -342,3 +342,17 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
 end
+
+Rails.application.config.to_prepare do
+  Devise::RegistrationsController.class_eval do
+    before_action :configure_permitted_parameters
+
+    protected
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.permit(:sign_up, keys: [
+        :first_name, :last_name, :user_name, :phone_number, :dob
+      ])
+    end
+  end
+end
