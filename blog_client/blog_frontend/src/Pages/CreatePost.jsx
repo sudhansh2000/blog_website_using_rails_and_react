@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import './CreatePost.css';
-
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const CreatePost = () => {
   const redirect = useNavigate();
@@ -13,26 +13,33 @@ const CreatePost = () => {
 
   const [categories, setCategories] = useState([]);
 
+
   useState(() => {
     axios.get("http://localhost:3001/v1/categories")
-      .then(res => setCategories(res.data))
-      .catch(err => console.log(err));
-      }, []);
-
+    .then(res => setCategories(res.data))
+    .catch(err => console.log(err));
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     form.tags = form.tags.map(tag => tag.trim()).filter(tag => tag !== "");
     if (!user) return alert("Please log in to create the post.");
     try {
       const res = await axios.post(`http://localhost:3001/v1/users/${user.id}/posts`, 
-      { post: form },
-      {headers: { Authorization: `Bearer ${token}` }
+        { post: form },
+        {headers: { Authorization: `Bearer ${token}` }
     } );
-      alert("Post created successfully!");
-      redirect(`/posts/${res.data.post.id}`);
+    alert("Post created successfully!");
+    redirect(`/posts/${res.data.post.id}`);
     }
     catch (error) {
-      console.log(error);
+      toast.warn(error.response.data.error, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      alert(error.response.data.errors);
     }
   }
 
@@ -48,12 +55,13 @@ const CreatePost = () => {
               value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required
             />
           </div>
+      <ToastContainer />
           <div className="form-group">
             <label htmlFor="content">Content</label>
             <textarea id="content" 
               placeholder='Write whats on your mind' 
               value={form.content} 
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              onChange={(e) => setForm({ ...form, content: e.target.value })} required
             ></textarea>
           </div>
           <div className="category_menu">

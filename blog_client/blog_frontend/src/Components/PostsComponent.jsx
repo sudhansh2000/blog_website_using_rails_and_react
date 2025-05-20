@@ -27,11 +27,12 @@ const PostComponent = ({ id }) => {
   const [likepng, setLikePng] = useState(likepnghollow);
   const [bookmarkpng, setBookmarkPng] = useState(bookmarkhollow);
 
-  const HandleOpenDialog = () => {
+  const HandleOpenDialog = async () => {
+    await fetchUserData();
     if (!user) {
       alert("Please log in to like the post.");
       redirect("/sign_in");
-      return; // prevent further execution
+      return;
     }
     dialogRef.current.showModal();
   };
@@ -39,7 +40,6 @@ const PostComponent = ({ id }) => {
   const HandleCloseDialog = () => {
     dialogRef.current.close();
   };
-  // var likepng = likepnghollow
 
   useEffect(() => {
     axios
@@ -48,10 +48,20 @@ const PostComponent = ({ id }) => {
       .catch((err) => console.error("Failed to fetch likes:", err));
   }, [id]);
 
+  useEffect(() => {
+    if (post) {
+      setLikePng(post.liked_by_user ? likepngfilled : likepnghollow);
+      setBookmarkPng(post.bookmarked_by_user ? bookmarkfilled : bookmarkhollow);
+    }
+  }, [post]);
+
   const fetchUserData = async () => {
+    if (users.length > 0) {
+      return users;
+    }
     try {
       await axios
-        .get(`http://localhost:3001/v1/users`)
+        .get(`http://localhost:3001/v1/users`, { cache: true })
         .then((res) => setUsers(res.data))
         .catch((err) => console.error("Failed to fetch users:", err));
     } catch (error) {
@@ -61,16 +71,18 @@ const PostComponent = ({ id }) => {
 
   useEffect(() => {
     if (isUserPresent) {
-      fetchUserData();
+      // fetchUserData();
       setUserPresent(false);
     }
   }, [isUserPresent]);
 
   useEffect(() => {
+    const url = user? `http://localhost:3001/v1/posts/${id}?user_id=${user.id}` : `http://localhost:3001/v1/posts/${id}`;
     axios
-      .get(`http://localhost:3001/v1/posts/${id}`)
+      .get(url)
       .then((res) => setPost(res.data))
       .catch((err) => console.error("Failed to fetch post:", err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
 
@@ -104,10 +116,12 @@ const PostComponent = ({ id }) => {
   };
 
   const SharePost = async () => {
+    // await fetchUserData();
     if (!user) {
       alert("Please log in to share the post.");
       redirect("/sign_in");
     }
+    await fetchUserData();
     try {
       await axios.post(
         `http://localhost:3001/v1/users/${user.id}/share_posts`,
@@ -207,7 +221,7 @@ const PostComponent = ({ id }) => {
               <img
                 className="image-button"
                 src={likepng}
-                alt="alternateimage"
+                alt="like"
               />
             </button>
           </span>

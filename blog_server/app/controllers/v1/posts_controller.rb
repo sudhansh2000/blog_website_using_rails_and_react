@@ -24,8 +24,8 @@ class V1:: PostsController < ApplicationController
 
   def show
     post = Post.joins(:category, :user).
-      where("posts.id = ?", params[:id]).
-      select("posts.id, posts.title,
+      where("posts.id = ?", params[:id])
+      .select("posts.id, posts.title,
         users.id as user_id,
         posts.content,
         posts.created_at,
@@ -34,7 +34,26 @@ class V1:: PostsController < ApplicationController
         users.first_name,
         users.last_name,
         categories.cat_name,
-        tags").first
+        tags")
+      .map do |post|
+        {
+          id: post.id,
+          title: post.title,
+          user_id: post.user_id,
+          content: post.content,
+          created_at: post.created_at,
+          is_private: post.is_private,
+          user_name: post.user_name,
+          first_name: post.first_name,
+          last_name: post.last_name,
+          cat_name: post.cat_name,
+          tags: post.tags,
+          likes_count: post.likes.count,
+          liked_by_user: Like.where(user_id: params[:user_id], liked_on_type: "Post", liked_on_id: post.id).count > 0,
+          bookmarked_by_user: Bookmark.where(user_id: params[:user_id], post_id: post.id).count > 0
+        }
+      end
+      .first
 
     render json: post
   end

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import likepnghollow from '../assets/likepost.png'
+import likepngfilled from '../assets/likepostfilled.png'
 // import lokepngfilled from '../assets/likepostfilled.png'
 import replycomment from '../assets/replycomment.png'
 
@@ -22,10 +23,13 @@ const CommentSection = ({id}) => {
   const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/posts/${id}/comments`)
+    const url = user? `http://localhost:3001/v1/posts/${id}/comments?id=${user.id}` : `http://localhost:3001/v1/posts/${id}/comments`;
+
+    axios.get(url)
       .then((res) => setComments(res.data))
       .catch((err) => console.error("Error fetching comments:", err));
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const likeComment= async(paramComment)=>{
@@ -40,6 +44,10 @@ const CommentSection = ({id}) => {
             theme: "light",
             transition: Bounce,
           });
+
+          document.getElementById(paramComment.id).src = likepngfilled;
+          document.getElementById(`div-${paramComment.id}`).innerHTML = paramComment.likes_count + 1;
+          
         }
         else {
           toast.warn("Comment already liked!", {
@@ -74,8 +82,10 @@ const CommentSection = ({id}) => {
   };
 
   const loadReplies = (commentId) => {
+    const url = user? `http://localhost:3001/v1/comments/${commentId}/comments?id=${user.id}` : `http://localhost:3001/v1/comments/${commentId}/comments`;
+
     if (replies[commentId]) return;
-    axios.get(`http://localhost:3001/v1/comments/${commentId}/comments`)
+    axios.get(url)
       .then(res => setReplies(prev => ({ ...prev, [commentId]: res.data })))
       .catch(err => console.error("Error fetching replies:", err));
   };
@@ -146,9 +156,13 @@ const CommentSection = ({id}) => {
               )}
 
               {user && (
-                <button onClick={() => likeComment(comment)}>
-                  {comment.likes_count}
-                  <img className="comment-image-button" src={likepnghollow} alt="Like" />
+                <button onClick={() => { likeComment(comment); }}>
+                  <span id={`div-${comment.id}`}>{comment.likes_count} </span>
+                  {comment.liked_by_user ? (
+                    <img id={comment.id} className="comment-image-button" src={likepngfilled} alt="Like" />
+                  ) : (
+                    <img id={comment.id} className="comment-image-button" src={likepnghollow} alt="Like" />
+                  )}
                   </button>
               )}
 
@@ -182,8 +196,16 @@ const CommentSection = ({id}) => {
                     <p className="comment-meta">
                       {new Date(reply.created_at).toLocaleDateString()}
 
+
                       {user && (
-                        <button className='reply-button' onClick={() => likeComment(reply)}>Like</button>
+                        <button onClick={() => { likeComment(reply); }}>
+                          <span id={`div-${reply.id}`}>{reply.likes_count} </span>
+                          {reply.liked_by_user ? (
+                            <img id={reply.id} className="comment-image-button" src={likepngfilled} alt="Like" />
+                          ) : (
+                            <img id={reply.id} className="comment-image-button" src={likepnghollow} alt="Like" />
+                          )}
+                          </button>
                       )}
                     </p>
                   </div>

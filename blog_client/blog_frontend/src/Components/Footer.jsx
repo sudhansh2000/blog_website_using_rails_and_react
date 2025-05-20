@@ -16,10 +16,10 @@ const Footer = () => {
           <div className="footer-col">
             <h4>company</h4>
             <ul>
-              <li><a href="./about_us">about us</a></li>
-              <li><a href="./about_us">our services</a></li>
-              <li><a href="./about_us">privacy policy</a></li>
-              <li><a href="./about_us">affiliate program</a></li>
+              <li><a href="/about_us">about us</a></li>
+              <li><a href="/about_us">our services</a></li>
+              <li><a href="/about_us">privacy policy</a></li>
+              <li><a href="/about_us">affiliate program</a></li>
             </ul>
           </div>
           <div className="footer-col">
@@ -31,7 +31,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>follow us</h4>
+            <h4>follow me on </h4>
             <div className="social-links">
               <a href="https://github.com/sudhansh2000"><FontAwesomeIcon icon={faGithub} /></a>
               <a href="https://github.com/sudhansh2000"><FontAwesomeIcon icon={faTwitter} /></a>

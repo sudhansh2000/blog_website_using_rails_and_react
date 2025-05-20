@@ -6,9 +6,9 @@ body{
 }
 
 .footer {
-  background-color: #24262b;
+  background-color: rgb(14, 78, 87);
   padding: 70px 0;
-  text-align: left; /* ✅ This is essential */
+  /* text-align: left; ✅ This is essential */
 }
 *{
 	margin:0;
@@ -25,10 +25,6 @@ body{
 }
 ul{
 	list-style: none;
-}
-.footer{
-	background-color: #24262b;
-    padding: 70px 0;
 }
 .footer-col{
   flex-basis: 33%;

@@ -18,7 +18,8 @@ class V1:: CommentsController < ApplicationController
             parent_id: comment.parent_id,
             created_at: comment.created_at,
             replies_count: comment_replies_count[comment.id],
-            likes_count: comment.likes.count
+            likes_count: comment.likes.count,
+            liked_by_user: Like.where(user_id: params[:id], liked_on_type: "Comment", liked_on_id: comment.id).count>0
           }
         end
     elsif params[:user_id].present?
@@ -37,7 +38,9 @@ class V1:: CommentsController < ApplicationController
             content: comment.content,
             parent_id: comment.parent_id,
             created_at: comment.created_at,
-            replies_count: comment_replies_count[comment.id] || 0
+            replies_count: comment_replies_count[comment.id],
+            likes_count: comment.likes.count,
+            liked_by_user: Like.where(user_id: params[:id], liked_on_type: "Comment", liked_on_id: comment.id).count>0
           }
         end
     else
