@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
-  padding: 20px 1px 50px 0px;
+  padding: 20px 1px 5;
   max-width: 70%;
   margin: 0 auto;
   box-sizing: border-box;

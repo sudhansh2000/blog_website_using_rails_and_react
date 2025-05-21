@@ -12,8 +12,8 @@ const ProfilePosts = ({ id }) => {
 
   useEffect(() => {
     const url = id
-      ? `http://localhost:3001/v1/users/${id}/posts?page_no=${pageNo}&page_size=${PAGE_SIZE}`
-      : `http://localhost:3001/v1/posts?page_no=${pageNo}&page_size=${PAGE_SIZE}`;
+      ? `${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/posts?page_no=${pageNo}&page_size=${PAGE_SIZE}`
+      : `${import.meta.env.VITE_API_BASE_URL}/v1/posts?page_no=${pageNo}&page_size=${PAGE_SIZE}`;
 
     axios.get(url)
       .then(res => {

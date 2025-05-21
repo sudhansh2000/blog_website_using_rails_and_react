@@ -8,9 +8,11 @@
 .post-info {
   /* padding: 40px 20px; */
   max-width: 800px;
-  max-width: 70%;
+  min-width: 70%;
+  /* max-width: 10%; */
+  /* align-self: center; */
   margin: 2rem auto;
-  padding: 2rem 7%;
+  padding: 2rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,14 +58,15 @@
 }
 
 .post-content {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
+  min-width: 100%;
+  margin: 0%;
   font-size: 1.1rem;
   line-height: 1.8;
   color: #1f2937;
   text-align: justify;
   padding-bottom: 2rem;
 }
-
 
 /* .background-root {
   --background-gradient: linear-gradient(178deg, #ffff33 10%, #3333ff);
@@ -84,8 +87,6 @@
   right: 0;
   bottom: 0;
   background-color: rgba(58, 58, 58, 0.5);
-  /* display: flex; */
-  /* align-items: center; */
 }
 .dialog-box {
   position: fixed;

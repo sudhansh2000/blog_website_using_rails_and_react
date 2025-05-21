@@ -7,7 +7,7 @@ const UserSharePosts = ({id}) => {
   const [posts, setPosts] = useState([])
   
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/users/${id}/share_posts`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/share_posts`)
         .then(res =>  setPosts(res.data))
         .catch(err => console.log(err));
       },[id])
@@ -20,7 +20,7 @@ const UserSharePosts = ({id}) => {
         {posts.map((post) => (
           <div>
             <div className="post-card">
-          <Link to={`/posts/${post.post_id}`} key={post.post_id} className="post-link">
+          <Link to={`/posts/${post.post_id}`} key={post.id} className="post-link">
               <h2>{post.title}</h2>
           </Link>
               <Link to={`/user/${post.user_id}`} className="user-link">

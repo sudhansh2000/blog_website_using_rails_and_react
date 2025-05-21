@@ -8,7 +8,7 @@ function ProfileInfo({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/v1/users/${id}`)
+      .get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}`)
       .then((res) => setUserInfo(res.data))
       .catch(() => alert("Failed to fetch profile."));
   }, [id]);

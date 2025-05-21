@@ -14,7 +14,7 @@
 }
 
 .form-container {
-  max-width: 500px;
+  max-width: 70%;
   margin: 2rem auto;
   padding: 2rem 2.5rem;
   background: #fff;
@@ -24,6 +24,8 @@
 
 .form-group,
 .category_menu {
+  border-width: 3px;
+  border: #333;
   margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
@@ -58,6 +60,17 @@ textarea {
   resize: vertical;
 }
 
+.content-area{
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  /* background: #fafafa; */
+  transition: border 0.2s;
+  min-height: 200px;
+  resize: vertical;
+  margin-bottom: 20px;
+}
 input[type="checkbox"] {
   width: 18px;
   height: 18px;

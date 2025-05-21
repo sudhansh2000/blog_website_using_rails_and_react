@@ -14,7 +14,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3001/sign_in", { user: form });
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/sign_in`, { user: form });
       login(res.data.user, res.data.token);
       navigate("/");
     // eslint-disable-next-line no-unused-vars

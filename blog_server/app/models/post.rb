@@ -10,6 +10,7 @@ class Post < ApplicationRecord
     has_many :shared_by_users, through: :share_posts, source: :sender
     has_many :shared_with_users, through: :share_posts, source: :receiver
 
+    # serialize :content, JSON
     # default_scope { where(is_private: false) }
     scope :select_post, -> { select("posts.id, title, tags, created_at, is_private") }
 

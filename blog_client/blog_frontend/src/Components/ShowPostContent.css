@@ -1,0 +1,8 @@
+.codex-editor,
+.codex-editor__redactor {
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-bottom: 50px !important;
+  box-shadow: none !important;
+  border: none !important;
+}

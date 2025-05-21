@@ -15,7 +15,7 @@ import Dashboard from './Pages/Dashboard'
 import EditPost from './Pages/EditPost'
 import AboutUs from './Pages/AboutUs'
 import PreferredCategories from './Pages/PreferredCategories';
-
+import Test from './Pages/test'
 function App() {
   return (
     <>
@@ -32,6 +32,7 @@ function App() {
         <Route path="/edit_post/:id" element={<EditPost />} />
         <Route path="/about_us" element={<AboutUs />} />
         <Route path="/select-categories" element={<PreferredCategories />} />
+        <Route path="/test" element={<Test />} />
         {/* <Route path="/posts" element={<Posts />} /> */}
       </Routes>
       <Footer/>

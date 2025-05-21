@@ -11,6 +11,7 @@ import bookmarkfilled from "../assets/savepostfilled.png";
 import sharepng from "../assets/sharepost.png";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { useRef } from "react";
+import ShowPostContent from "./ShowPostContent";
 
 const PostComponent = ({ id }) => {
   // debugger
@@ -20,7 +21,7 @@ const PostComponent = ({ id }) => {
   const redirect = useNavigate();
   const [post, setPost] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
-  const [isUserPresent, setUserPresent] = useState(user ? true : false);
+  // const [isUserPresent, setUserPresent] = useState(user ? true : false);
   const token = localStorage.getItem("token");
   // const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [receiverId, setReceiverId] = useState(null);
@@ -43,7 +44,7 @@ const PostComponent = ({ id }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/v1/posts/${id}/likes`)
+      .get(`${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/likes`)
       .then((res) => setLikes(res.data.total_likes))
       .catch((err) => console.error("Failed to fetch likes:", err));
   }, [id]);
@@ -61,7 +62,7 @@ const PostComponent = ({ id }) => {
     }
     try {
       await axios
-        .get(`http://localhost:3001/v1/users`, { cache: true })
+        .get(`${import.meta.env.VITE_API_BASE_URL}/v1/users`, { cache: true })
         .then((res) => setUsers(res.data))
         .catch((err) => console.error("Failed to fetch users:", err));
     } catch (error) {
@@ -69,16 +70,16 @@ const PostComponent = ({ id }) => {
     }
   };
 
-  useEffect(() => {
-    if (isUserPresent) {
-      // fetchUserData();
-      setUserPresent(false);
-    }
-  }, [isUserPresent]);
+  // useEffect(() => {
+  //   if (isUserPresent) {
+  //     // fetchUserData();
+  //     setUserPresent(false);
+  //   }
+  // }, [isUserPresent]);
 
   useEffect(() => {
-    const url = user? `http://localhost:3001/v1/posts/${id}?user_id=${user.id}` : `http://localhost:3001/v1/posts/${id}`;
-    axios
+    const url = user? `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}?user_id=${user.id}` : `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}`;
+     axios
       .get(url)
       .then((res) => setPost(res.data))
       .catch((err) => console.error("Failed to fetch post:", err));
@@ -94,7 +95,7 @@ const PostComponent = ({ id }) => {
     }
     try {
       await axios.post(
-        `http://localhost:3001/v1/users/${user.id}/bookmarks?post_id=${id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/v1/users/${user.id}/bookmarks?post_id=${id}`,
         { postId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -124,7 +125,7 @@ const PostComponent = ({ id }) => {
     await fetchUserData();
     try {
       await axios.post(
-        `http://localhost:3001/v1/users/${user.id}/share_posts`,
+        `${import.meta.env.VITE_API_BASE_URL}/v1/users/${user.id}/share_posts`,
         { post_id: id, receiver_id: receiverId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -150,7 +151,7 @@ const PostComponent = ({ id }) => {
       }
 
       const response = await axios.post(
-        `http://localhost:3001/v1/posts/${id}/likes?user_id=${user.id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/likes?user_id=${user.id}`,
         { user_id: user.id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -208,8 +209,8 @@ const PostComponent = ({ id }) => {
               </span>
             ))}
         </div>
-        <div className="post-content" style={{ whiteSpace: "pre-line" }}>
-          {post.content}
+        <div className="post-content">
+          <ShowPostContent data ={JSON.parse(post.content)} />
         </div>
         {/* <p>{post.content}
         <div className="post-content">{post.content}</div>

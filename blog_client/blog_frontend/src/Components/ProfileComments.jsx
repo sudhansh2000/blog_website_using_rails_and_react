@@ -7,7 +7,7 @@ const ProfileComments = ({id}) => {
   const [comments, setComments] = useState([])
   
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/users/${id}/comments`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/comments`)
         .then(res =>  setComments(res.data))
         .catch(err => console.log(err));
       },[id])

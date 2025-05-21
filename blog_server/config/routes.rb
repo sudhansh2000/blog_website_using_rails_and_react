@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   post "sign_in", to: "v1/sessions#create"
   delete "sign_out", to: "v1/sessions#destroy"
+  post "uploads/image", to: "uploads#image"
 
   namespace :v1 do
     resources :bookmarks, only: [ :destroy ]

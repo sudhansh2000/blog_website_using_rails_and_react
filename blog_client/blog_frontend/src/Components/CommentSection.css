@@ -3,7 +3,8 @@
 }
 
 .comments-section{
-  max-width: 70%;
+  max-width: 800px;
+  min-width: 70%;
   margin: 2rem auto;
   padding: 2rem;
   /* display: flex; */

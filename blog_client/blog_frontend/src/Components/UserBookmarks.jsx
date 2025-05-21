@@ -9,7 +9,7 @@ const UserBookmarks = ({id}) => {
   const [posts, setPosts] = useState([])
   
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/users/${id}/bookmarks`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/bookmarks`)
         .then(res =>  setPosts(res.data))
         .catch(err => console.log(err));
       },[id])

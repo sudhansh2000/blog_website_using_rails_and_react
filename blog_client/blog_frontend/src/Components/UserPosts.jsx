@@ -8,7 +8,7 @@ const UserPosts = ({id}) => {
   const { token } = useAuth();
   const [posts, setPosts] = useState([])
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/users/${id}/posts`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/posts`)
       .then(res => setPosts(res.data))
       .catch(err => console.log(err));
   }, [id])
@@ -17,7 +17,7 @@ const UserPosts = ({id}) => {
 
   const deletePost = (postId) => {
     // debugger;
-    axios.delete(`http://localhost:3001/v1/posts/${postId}`, {
+    axios.delete(`${import.meta.env.VITE_API_BASE_URL}/v1/posts/${postId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {

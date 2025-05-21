@@ -16,7 +16,7 @@ const PreferredCategories = () => {
   console.log(userId);
   useEffect(() => {
     // Fetch categories from API
-    axios.get('http://localhost:3001/v1/categories')
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/categories`)
       .then(response => {
         setCategories(response.data);
         setLoading(false);
@@ -36,7 +36,7 @@ const PreferredCategories = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:3001/v1/users/${userId}/category_preferences`, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${userId}/category_preferences`, {
         category_preference: { ids: selectedIds }
       });
       alert('Preferences saved!');

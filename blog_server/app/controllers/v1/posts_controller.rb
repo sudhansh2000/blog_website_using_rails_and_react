@@ -25,22 +25,15 @@ class V1:: PostsController < ApplicationController
   def show
     post = Post.joins(:category, :user).
       where("posts.id = ?", params[:id])
-      .select("posts.id, posts.title,
-        users.id as user_id,
-        posts.content,
-        posts.created_at,
-        posts.is_private,
-        user_name,
-        users.first_name,
-        users.last_name,
-        categories.cat_name,
-        tags")
+      .select("posts.id, posts.title, users.id as user_id, posts.content,
+              posts.created_at, posts.is_private, user_name, users.first_name,
+              users.last_name, categories.cat_name, tags")
       .map do |post|
         {
           id: post.id,
           title: post.title,
           user_id: post.user_id,
-          content: post.content,
+          content:  post.content,
           created_at: post.created_at,
           is_private: post.is_private,
           user_name: post.user_name,
@@ -91,6 +84,14 @@ class V1:: PostsController < ApplicationController
   end
 
   private
+
+  def editor_data_hash
+    JSON.parse(editor_data || "{}")
+  end
+
+  def editor_data_hash=(value)
+    self.editor_data = value.to_json
+  end
   def authorize_user!
     post = Post.find_by(id: params[:id])
     unless post && post.user == current_user

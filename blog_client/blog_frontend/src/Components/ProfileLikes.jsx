@@ -8,7 +8,7 @@ const ProfileLikes = ({id}) => {
   const [likes, setLikes] = useState([])
   
   useEffect(() => {
-    axios.get(`http://localhost:3001/v1/users/${id}/likes`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${id}/likes`)
         .then(res =>  setLikes(res.data))
         .catch(err => console.log(err));
       },[id])

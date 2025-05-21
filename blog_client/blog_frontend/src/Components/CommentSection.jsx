@@ -23,7 +23,7 @@ const CommentSection = ({id}) => {
   const [replyText, setReplyText] = useState("");
 
   useEffect(() => {
-    const url = user? `http://localhost:3001/v1/posts/${id}/comments?id=${user.id}` : `http://localhost:3001/v1/posts/${id}/comments`;
+    const url = user? `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/comments?id=${user.id}` : `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/comments`;
 
     axios.get(url)
       .then((res) => setComments(res.data))
@@ -35,7 +35,7 @@ const CommentSection = ({id}) => {
   const likeComment= async(paramComment)=>{
     if(!user) redirect ('/sign_up');
     try {
-      const res = await axios.post(`http://localhost:3001/v1/comments/${paramComment.id}/likes?user_id=${user.id}`,
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/comments/${paramComment.id}/likes?user_id=${user.id}`,
       { userId: user._id },{headers: { Authorization: `Bearer ${token}` } });
         if(res.data.id!=null) {
           toast.success('Comment liked successfully!', {
@@ -65,7 +65,7 @@ const CommentSection = ({id}) => {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (!user) return alert("Please log in to comment.");
-    axios.post(`http://localhost:3001/v1/posts/${id}/comments`, {comment: commentBody}, {headers: { Authorization: `Bearer ${token}` } })
+    axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/comments`, {comment: commentBody}, {headers: { Authorization: `Bearer ${token}` } })
     .then((res) => {
       setComments([...comments, { ...res.data.comment, user_name: user.user_name }]);
       setCommentBody({user_id: user.id, content: ""});
@@ -82,7 +82,9 @@ const CommentSection = ({id}) => {
   };
 
   const loadReplies = (commentId) => {
-    const url = user? `http://localhost:3001/v1/comments/${commentId}/comments?id=${user.id}` : `http://localhost:3001/v1/comments/${commentId}/comments`;
+    const url = user? 
+    `${import.meta.env.VITE_API_BASE_URL}/v1/comments/${commentId}/comments?id=${user.id}` : 
+    `${import.meta.env.VITE_API_BASE_URL}/v1/comments/${commentId}/comments`;
 
     if (replies[commentId]) return;
     axios.get(url)
@@ -95,7 +97,7 @@ const CommentSection = ({id}) => {
     if (!user) return alert("Please log in to reply.");
     try {
       await axios.post(
-        `http://localhost:3001/v1/comments/${parentId}/comments`,
+        `${import.meta.env.VITE_API_BASE_URL}/v1/comments/${parentId}/comments`,
         {
           content: replyText,
           user_id: user.id, // Include user ID

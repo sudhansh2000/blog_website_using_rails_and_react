@@ -6,7 +6,7 @@ class V1::SharePostsController < ApplicationController
   def index
     shared_data = SharePost.joins(:post, :sender).
       where(receiver_id: @user.id).
-      select(:post_id, :user_id, :title, :created_at, :user_name).
+      select(:id, :post_id, :user_id, :title, :created_at, :user_name).
       order(created_at: :desc)
 
     render json: shared_data
