@@ -15,11 +15,15 @@ import Dashboard from './Pages/Dashboard'
 import EditPost from './Pages/EditPost'
 import AboutUs from './Pages/AboutUs'
 import PreferredCategories from './Pages/PreferredCategories';
-import Test from './Pages/test'
+import AdminPage from './Pages/AdminPage'
+import ManageCategories from './Pages/ManageCategories';
+// eslint-disable-next-line no-unused-vars
+import { ToastContainer, toast, Bounce } from 'react-toastify'
 function App() {
   return (
     <>
     <NavBar/>
+    <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/posts/:id" element={<PostDeatil />}/>
@@ -32,7 +36,8 @@ function App() {
         <Route path="/edit_post/:id" element={<EditPost />} />
         <Route path="/about_us" element={<AboutUs />} />
         <Route path="/select-categories" element={<PreferredCategories />} />
-        <Route path="/test" element={<Test />} />
+        <Route path="/admin_dashboard" element={<AdminPage />} />
+        <Route path="/manage_categories" element={<ManageCategories />} />
         {/* <Route path="/posts" element={<Posts />} /> */}
       </Routes>
       <Footer/>

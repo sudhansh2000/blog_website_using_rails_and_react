@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
+import { ToastContainer, toast, Bounce } from 'react-toastify'
 // import 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -25,12 +26,30 @@ const SignUp = () => {
         }
       );
   
-      alert("Account created successfully. Please select your preferred categories.");
+      toast.success("Account created successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      // alert("Account created successfully. Please select your preferred categories.");
       navigate("/select-categories", { state: { userId: response.data.user.id } });
-  
+      
     } catch (err) {
-      alert(err.response?.data?.error || "Account creation failed.");
-      console.error(err);
+      // debugger
+      // var errorMessage = err.response?.data?.error || "Account creation failed.";
+
+      const errorMessage = Array.isArray(err.response?.data?.error)
+    ? err.response?.data?.error.join(", ")
+    : err.response?.data?.error || "Account creation failed.";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      // alert(err.response?.data?.error || "Account creation failed.");
+      // console.error(err);
     }
   };
   // Helper to get today's date in YYYY-MM-DD format

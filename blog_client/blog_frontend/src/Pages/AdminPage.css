@@ -1,0 +1,29 @@
+/* In AdminPage.css or global CSS */
+.admin-page{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 0.5fr));
+  gap: 1.5rem;
+  /* padding: 20px 1px 130px 0px; */
+  padding-bottom: 50px;
+  max-width: 70%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f4f4f4;
+}

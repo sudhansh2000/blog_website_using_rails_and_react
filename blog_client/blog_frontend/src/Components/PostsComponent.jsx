@@ -31,8 +31,13 @@ const PostComponent = ({ id }) => {
   const HandleOpenDialog = async () => {
     await fetchUserData();
     if (!user) {
-      alert("Please log in to like the post.");
-      redirect("/sign_in");
+      toast.warn("Please log in to share the post.", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      // redirect("/sign_in");
       return;
     }
     dialogRef.current.showModal();
@@ -88,11 +93,17 @@ const PostComponent = ({ id }) => {
 
 
   const BookmarkPost = async () => {
-    setBookmarkPng(bookmarkfilled);
     if (!user) {
-      alert("Please log in to bookmark the post.");
-      redirect("/sign_in");
+      toast.warn("Please log in to bookmark the post.", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+      // redirect("/sign_in");
     }
+    setBookmarkPng(bookmarkfilled);
     try {
       await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/v1/users/${user.id}/bookmarks?post_id=${id}`,
@@ -137,18 +148,30 @@ const PostComponent = ({ id }) => {
         transition: Bounce,
       });
     } catch (error) {
+      // toast.error(error.response.data.error, {
+      //   position: "top-right",
+      //   autoClose: 3000, 
+      //   theme: "light",
+      //   transition: Bounce,
+      // });
       alert(error.response.data.error);
     }
   };
 
   const LikePost = async () => {
-    setLikePng(likepngfilled);
     try {
       if (!user) {
-        alert("Please log in to like the post.");
-        redirect("/sign_in");
+        toast.warn("Please log in to like the post.", {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "light",
+          transition: Bounce,
+        });
+        // alert("Please log in to like the post.");
+        // redirect("/sign_in");
         return; // prevent further execution
       }
+      setLikePng(likepngfilled);
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/v1/posts/${id}/likes?user_id=${user.id}`,
@@ -240,10 +263,11 @@ const PostComponent = ({ id }) => {
 
         <dialog ref={dialogRef} className="dialog-container">
           <div className="dialog-box">
+            {/* <ToastContainer /> */}
               <button className="button-close-dialog" onClick={HandleCloseDialog}>
                 close
               </button>
-              <h6>select user to share post</h6>
+              <h4>Select user to share post</h4>
               {/* <p>select user to share post</p> */}
             <div className="dialog-content"></div>
             <div className="user-select">

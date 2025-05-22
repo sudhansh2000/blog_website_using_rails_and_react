@@ -4,8 +4,11 @@ class V1:: UsersController < ApplicationController
   before_action :authorize_user!, only: [ :update ]
   skip_before_action :authorize_user!, if: -> { Rails.env.test? }
 
+  # get user data for adminx
+
+
   def index
-    users = User.all.select("id, first_name, last_name, user_name")
+    users = User.where(role: "user").select("id, first_name, last_name, user_name")
     if params[:page_no].present? && params[:page_size].present?
       page_size = params[:page_size].to_i
       page_offset = (params[:page_no].to_i - 1) * page_size

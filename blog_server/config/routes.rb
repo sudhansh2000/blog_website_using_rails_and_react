@@ -8,6 +8,13 @@ Rails.application.routes.draw do
 
   namespace :v1 do
     resources :bookmarks, only: [ :destroy ]
+    namespace :admin do
+      resources :users, only: [ :index, :update, :destroy ] do
+        member do
+          patch :toggle_active
+        end
+      end
+    end
 
     resources :users, only: [ :index, :show, :create, :update ] do
       resources :share_posts, only: [ :index, :create ]

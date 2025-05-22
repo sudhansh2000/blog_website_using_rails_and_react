@@ -9,6 +9,7 @@ import likepnghollow from '../assets/likepost.png'
 import likepngfilled from '../assets/likepostfilled.png'
 // import lokepngfilled from '../assets/likepostfilled.png'
 import replycomment from '../assets/replycomment.png'
+import 'react-toastify/dist/ReactToastify.css';
 
 const CommentSection = ({id}) => {
 
@@ -119,13 +120,18 @@ const CommentSection = ({id}) => {
 
       loadReplies(parentId);
     } catch (err) {
-      console.error("Error posting reply:", err);
+      toast.err("Error posting reply:", err, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
+      });
+      // console.error("Error posting reply:", err);
     }
   };
 
   return (
     <div>
-      <ToastContainer />
       {user ? (
         <form onSubmit={handleCommentSubmit} className="comment-form">
           <textarea

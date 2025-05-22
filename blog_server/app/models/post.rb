@@ -12,7 +12,7 @@ class Post < ApplicationRecord
 
     # serialize :content, JSON
     # default_scope { where(is_private: false) }
-    scope :select_post, -> { select("posts.id, title, tags, created_at, is_private") }
+    scope :select_post, -> { select("posts.id, title, tags, posts.created_at, is_private") }
 
     validates :title, presence: true
     validates :content, presence: true

@@ -4,7 +4,7 @@ class V1::SessionsController < ApplicationController
 
     if user&.valid_password?(params[:user][:password])
       token = encode_token(user_id: user.id)
-      user_data = user.slice(:id, :first_name, :last_name, :user_name, :email, :dob)
+    user_data = user.slice(:id, :first_name, :last_name, :role, :user_name)
       render json: { user: user_data, token: token }, status: :ok
     else
       render json: { error: "Invalid credentials" }, status: :unauthorized

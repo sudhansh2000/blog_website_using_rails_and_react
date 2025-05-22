@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PreferredCategories.css'; // optional for styling
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 const PreferredCategories = () => {
 
@@ -38,6 +39,12 @@ const PreferredCategories = () => {
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/v1/users/${userId}/category_preferences`, {
         category_preference: { ids: selectedIds }
+      });
+      toast.success("Preferences saved!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "light",
+        transition: Bounce,
       });
       alert('Preferences saved!');
       navigate('/'); // or dashboard, home etc.

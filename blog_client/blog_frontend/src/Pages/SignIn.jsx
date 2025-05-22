@@ -16,7 +16,12 @@ function SignIn() {
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/sign_in`, { user: form });
       login(res.data.user, res.data.token);
-      navigate("/");
+      if (res.data.user.role === "admin") {
+        navigate("/admin_dashboard");
+      } else {
+        navigate("/");
+      }
+        
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
       alert("Login failed.");

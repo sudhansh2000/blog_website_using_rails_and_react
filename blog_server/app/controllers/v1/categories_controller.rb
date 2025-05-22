@@ -1,6 +1,8 @@
 class V1:: CategoriesController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :update, :destroy ]
-  skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+  # before_action :authenticate_user!, only: [ :create, :update, :destroy ]
+  # skip_before_action :authenticate_user!, if: -> { Rails.env.test? }
+  before_action :authorize_admin!, only: [ :create, :update, :destroy ]
+  skip_before_action :authorize_admin!, if: -> { Rails.env.test? }
 
   def index
     categories = Category.all
@@ -32,6 +34,14 @@ class V1:: CategoriesController < ApplicationController
       render json: { message: "Category deleted successfully" }, status: :ok
     else
       render json: { message: "Category Not found" }, status: :not_found
+    end
+  end
+
+  private
+
+  def authorize_admin!
+    unless current_user && current_user.role == "admin"
+      render json: { error: "Admins only" }, status: :unauthorized
     end
   end
 end
